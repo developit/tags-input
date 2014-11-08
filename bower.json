@@ -1,0 +1,29 @@
+{
+  "name": "tags-input",
+  "version": "0.5.0",
+  "homepage": "https://github.com/developit/tags-input",
+  "authors": [
+    "Jason Miller <jason@developit.ca>"
+  ],
+  "description": "<input type=\"tags\"> like magic.",
+  "main": "tags-input.js,tags-input.css",
+  "moduleType": [
+    "amd",
+    "node",
+    "globals"
+  ],
+  "keywords": [
+    "tags",
+    "input",
+    "polyfill"
+  ],
+  "license": "BSD 3-Clause",
+  "ignore": [
+    "**/.*",
+    "**/*.min.js",
+    "bower_components",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ]
+}
