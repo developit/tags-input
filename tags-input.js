@@ -6,7 +6,7 @@
 		module.exports = factory();
 	}
 	else {
-		g.tagsInput factory();
+		g.tagsInput = factory();
 	}
 }(this, function() {
 
@@ -165,4 +165,4 @@
 	tagsInput.enhance = tagsInput.tagsInput = tagsInput;
 
 	return tagsInput;
-});
+}));

@@ -19,7 +19,7 @@ tags-input [![NPM Version](http://img.shields.io/npm/v/tags-input.svg?style=flat
 Examples
 ========
 
-It's easy to use! In addition to the code from either the requirejs or commonjs examples,
+It's easy to use! In addition to the code from either the RequireJS or CommonJS examples,
 you'll also need to include `tags-input.css` - I didn't bundle it because that's a bit gross.
 
 **RequireJS Example:**
