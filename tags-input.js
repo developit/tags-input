@@ -21,14 +21,14 @@
 
 	function tagsInput(input) {
 		function el(type, name, text) {
-			var d = document.createElement(type);
-			if(name) d.className = name;
-			if(text) d.textContent = text;
-			return d;
+			var newEl = document.createElement(type);
+			if(name) newEl.className = name;
+			if(text) newEl.textContent = text;
+			return newEl;
 		}
 
-		function $(s, a) {
-			return base['querySelector'+(a?'All':'')](s);
+		function $(selection, all) {
+			return base['querySelector'+(all?'All':'')](selection);
 		}
 
 		function save() {
