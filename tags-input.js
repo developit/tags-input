@@ -32,7 +32,7 @@
 		}
 
 		function save() {
-			input.value = [].map.call($('.tag', true), function(tag) {
+			input.value = Array.prototype.map.call($('.tag', true), function(tag) {
 				return tag.textContent;
 			}).join(',');
 			input.dispatchEvent(new Event('change'));
