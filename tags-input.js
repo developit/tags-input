@@ -160,7 +160,10 @@
 
 		base.onmousedown = base.ontouchstart = function(e) {
 			if (e.target.classList.contains('tag')) select(e.target);
-			if (e.target===base.input) select(); return;
+			if (e.target===base.input) {
+				select();
+				return;
+			}
 			base.input.focus();
 			e.preventDefault();
 			return false;
