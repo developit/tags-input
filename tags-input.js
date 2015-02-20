@@ -10,6 +10,15 @@
 	}
 }(this, function() {
 
+
+	var COMMA = 188,
+		LEFT = 37,
+		RIGHT = 39,
+		DELETE = 46,
+		ENTER = 13,
+		BACKSPACE = 8,
+		TAB = 9
+
 	function tagsInput(input) {
 		function el(type, name, text) {
 			var d = document.createElement(type);
@@ -94,21 +103,21 @@
 
 			width();
 
-			if (key===13 || key===188 || key===9) {
-				if (!this.value && key!==188) return;
+			if (key===ENTER || key===COMMA || key===TAB) {
+				if (!this.value && key!==COMMA) return;
 				if (add(this.value)!==false) {
 					save();
 					this.value = '';
 					width();
 				}
 			}
-			else if (key===46 && sel) {
+			else if (key===DELETE && sel) {
 				if (sel.nextSibling!==base.input) select(sel.nextSibling);
 				base.removeChild(sel);
 				width();
 				save();
 			}
-			else if (key===8) {
+			else if (key===BACKSPACE) {
 				if (sel) {
 					select(sel.previousSibling);
 					base.removeChild(sel);
@@ -122,7 +131,7 @@
 					return;
 				}
 			}
-			else if (key===37) {
+			else if (key===LEFT) {
 				if (sel) {
 					if (sel.previousSibling) {
 						select(sel.previousSibling);
@@ -135,7 +144,7 @@
 					select(last);
 				}
 			}
-			else if (key===39) {
+			else if (key===RIGHT) {
 				if (!sel) {
 					return;
 				}
