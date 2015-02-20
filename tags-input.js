@@ -20,7 +20,7 @@
 		TAB = 9
 
 	function tagsInput(input) {
-		function el(type, name, text) {
+		function makeEl(type, name, text) {
 			var newEl = document.createElement(type);
 			if(name) newEl.className = name;
 			if(text) newEl.textContent = text;
@@ -48,7 +48,7 @@
 					return false;
 				}
 			}
-			base.insertBefore(el('span', 'tag', text), base.input).setAttribute('data-tag',text);
+			base.insertBefore(makeEl('span', 'tag', text), base.input).setAttribute('data-tag',text);
 		}
 
 		function select(el) {
@@ -74,7 +74,7 @@
 			}
 		}
 
-		var base = el('div', 'tags-input'),
+		var base = makeEl('div', 'tags-input'),
 			sib = input.nextSibling;
 
 		input.parentNode[sib?'insertBefore':'appendChild'](base, sib);
@@ -82,7 +82,7 @@
 		input.style.cssText = 'position:absolute;left:0;top:-99px;width:1px;height:1px;opacity:0.01;';
 		input.tabIndex = -1;
 
-		base.input = el('input');
+		base.input = makeEl('input');
 		base.input.setAttribute('type', 'text');
 		base.input.placeholder = input.placeholder;
 		base.input.pattern = input.pattern;
