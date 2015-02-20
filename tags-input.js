@@ -52,8 +52,8 @@
 		}
 
 		function select(el) {
-			var sel = $('.selected');
-			if (sel) sel.classList.remove('selected');
+			var selectedTag = $('.tag.selected');
+			if (selectedTag) selectedTag.classList.remove('selected');
 			if (el) el.classList.add('selected');
 		}
 
@@ -106,7 +106,7 @@
 
 		base.input.onkeydown = function(e) {
 			var key = e.keyCode || e.which,
-				sel = $('.selected'),
+				selectedTag = $('.tag.selected'),
 				pos = this.selectionStart===this.selectionEnd && this.selectionStart,
 				last = [].pop.call($('.tag',true));
 
@@ -116,16 +116,16 @@
 				if (!this.value && key!==COMMA) return;
 				savePartialInput(this);
 			}
-			else if (key===DELETE && sel) {
-				if (sel.nextSibling!==base.input) select(sel.nextSibling);
-				base.removeChild(sel);
+			else if (key===DELETE && selectedTag) {
+				if (selectedTag.nextSibling!==base.input) select(selectedTag.nextSibling);
+				base.removeChild(selectedTag);
 				width();
 				save();
 			}
 			else if (key===BACKSPACE) {
-				if (sel) {
-					select(sel.previousSibling);
-					base.removeChild(sel);
+				if (selectedTag) {
+					select(selectedTag.previousSibling);
+					base.removeChild(selectedTag);
 					width();
 					save();
 				}
@@ -137,9 +137,9 @@
 				}
 			}
 			else if (key===LEFT) {
-				if (sel) {
-					if (sel.previousSibling) {
-						select(sel.previousSibling);
+				if (selectedTag) {
+					if (selectedTag.previousSibling) {
+						select(selectedTag.previousSibling);
 					}
 				}
 				else if (pos!==0) {
@@ -150,10 +150,10 @@
 				}
 			}
 			else if (key===RIGHT) {
-				if (!sel) {
+				if (!selectedTag) {
 					return;
 				}
-				select(sel.nextSibling);
+				select(selectedTag.nextSibling);
 			}
 			else {
 				return select();
