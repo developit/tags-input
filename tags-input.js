@@ -27,8 +27,8 @@
 			return newEl;
 		}
 
-		function $(selection, all) {
-			return base['querySelector'+(all?'All':'')](selection);
+		function $(cssSelector, all) {
+			return base['querySelector'+(all?'All':'')](cssSelector);
 		}
 
 		function save() {
