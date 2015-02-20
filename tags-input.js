@@ -66,6 +66,14 @@
 			) + 'px';
 		}
 
+		function savePartialInput(input) {
+			if (add(input.value)!==false) {
+				save();
+				input.value = '';
+				width();
+			}
+		}
+
 		var base = el('div', 'tags-input'),
 			sib = input.nextSibling;
 
@@ -93,6 +101,7 @@
 		base.input.onblur = function() {
 			base.classList.remove('focus');
 			select();
+			savePartialInput(this);
 		};
 
 		base.input.onkeydown = function(e) {
@@ -105,11 +114,7 @@
 
 			if (key===ENTER || key===COMMA || key===TAB) {
 				if (!this.value && key!==COMMA) return;
-				if (add(this.value)!==false) {
-					save();
-					this.value = '';
-					width();
-				}
+				savePartialInput(this);
 			}
 			else if (key===DELETE && sel) {
 				if (sel.nextSibling!==base.input) select(sel.nextSibling);
