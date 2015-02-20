@@ -38,7 +38,7 @@
 			input.dispatchEvent(new Event('change'));
 		}
 
-		function add(text) {
+		function addTag(text) {
 			if (!(text=text.trim())) return false;
 			if (!input.getAttribute('duplicates')) {
 				var d = $('[data-tag="'+text+'"]');
@@ -67,7 +67,7 @@
 		}
 
 		function savePartialInput(input) {
-			if (add(input.value)!==false) {
+			if (addTag(input.value)!==false) {
 				save();
 				input.value = '';
 				width();
