@@ -156,6 +156,12 @@
 				select(selectedTag.nextSibling);
 			}
 			else {
+				// If we don't have any tags yet, update the first tag live as the user types
+				// This means that users who only want one thing don't have to enter commas
+				if ( ! $('.tag', true).length ) {
+					input.value = base.input.value;
+					input.dispatchEvent(new Event('change'));
+				}
 				return select();
 			}
 
