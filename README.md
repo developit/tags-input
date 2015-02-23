@@ -1,6 +1,8 @@
 tags-input [![NPM Version](http://img.shields.io/npm/v/tags-input.svg?style=flat)](https://www.npmjs.org/package/tags-input) [![Bower Version](http://img.shields.io/bower/v/tags-input.svg?style=flat)](http://bower.io/search/?q=tags-input)
 =========
 
+[![Join the chat at https://gitter.im/developit/tags-input](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/developit/tags-input?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 **Features:**
 
 - I said `<input type="tags">` should be a thing.
