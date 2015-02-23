@@ -32,10 +32,13 @@
 			return base['querySelector'+(all?'All':'')](cssSelector);
 		}
 
-		function save() {
-			input.value = Array.prototype.map.call($('.tag', true), function(tag) {
+		// Save value out to original input element
+		function save(newValue) {
+			var tagValues = Array.prototype.map.call($('.tag', true), function(tag) {
 				return tag.textContent;
-			}).join(',');
+			})
+			tagValues.push(newValue)
+			input.value = tagValues.join(',');
 			input.dispatchEvent(new Event('change'));
 		}
 
@@ -74,7 +77,7 @@
 		function savePartialInput(input) {
 			var newValue = input.value;
 			if (shouldAddTag(newValue)!==false) {
-				save();
+				save(newValue);
 				input.value = '';
 				// Make input not displayed so it doesn't drop down onto new line
 				base.input.style.display = 'none';
