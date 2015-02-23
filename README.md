@@ -6,6 +6,7 @@ tags-input [![NPM Version](http://img.shields.io/npm/v/tags-input.svg?style=flat
 - I said `<input type="tags">` should be a thing.
 - With full keyboard and mouse support.
 - Works with HTML5 `pattern` and `placeholder` attributes, too!
+- Native [`change`](https://developer.mozilla.org/en-US/docs/Web/Events/change) and [`input`](https://developer.mozilla.org/en-US/docs/Web/Events/input) _("live" change)_ events.
 
 **Screenshot:**
 
