@@ -121,7 +121,7 @@
 
 		base.input.onkeydown = function(e) {
 			var key = e.keyCode || e.which,
-				selectedTag = $('.tag.selected'),
+				selectedTag = $('.selected'),
 				pos = this.selectionStart===this.selectionEnd && this.selectionStart,
 				last = [].pop.call($('.tag',true));
 
