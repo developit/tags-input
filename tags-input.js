@@ -10,6 +10,7 @@
 	}
 }(this, function() {
 
+	var log = console.log.bind(console);
 
 	var COMMA = 188,
 		LEFT = 37,
@@ -18,6 +19,8 @@
 		ENTER = 13,
 		BACKSPACE = 8,
 		TAB = 9
+
+	var NEXT_TICK = 0;
 
 	function tagsInput(input) {
 		function makeEl(type, name, text) {
@@ -71,6 +74,18 @@
 				save();
 				input.value = '';
 				width();
+			}
+		}
+
+		// If we don't have any tags yet, update the first tag live as the user types
+		// This means that users who only want one thing don't have to enter commas
+		function saveIfOnFirstTag(){
+			if ( ! $('.tag', true).length ) {
+				// NEXT_TICK because base.input.value won't be updated till after current event loop
+				window.setTimeout(function(){
+					input.value = base.input.value;
+					input.dispatchEvent(new Event('change'));
+				}, NEXT_TICK)
 			}
 		}
 
@@ -133,6 +148,7 @@
 					select(last);
 				}
 				else {
+					saveIfOnFirstTag();
 					return;
 				}
 			}
@@ -156,12 +172,7 @@
 				select(selectedTag.nextSibling);
 			}
 			else {
-				// If we don't have any tags yet, update the first tag live as the user types
-				// This means that users who only want one thing don't have to enter commas
-				if ( ! $('.tag', true).length ) {
-					input.value = base.input.value;
-					input.dispatchEvent(new Event('change'));
-				}
+				saveIfOnFirstTag();
 				return select();
 			}
 
