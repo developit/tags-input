@@ -10,31 +10,39 @@
 	}
 }(this, function() {
 
-
-	var COMMA = 188,
+	var BACKSPACE = 8,
+		TAB = 9,
+		ENTER = 13,
 		LEFT = 37,
 		RIGHT = 39,
 		DELETE = 46,
-		ENTER = 13,
-		BACKSPACE = 8,
-		TAB = 9
+		COMMA = 188;
 
 	function tagsInput(input) {
-		function makeEl(type, name, text) {
-			var newEl = document.createElement(type);
-			if(name) newEl.className = name;
-			if(text) newEl.textContent = text;
-			return newEl;
+		function createElement(type, name, text) {
+			var el = document.createElement(type);
+			if (name) el.className = name;
+			if (text) el.textContent = text;
+			return el;
 		}
 
-		function $(cssSelector, all) {
-			return base['querySelector'+(all?'All':'')](cssSelector);
+		function $(selector, all) {
+			return base['querySelector'+(all?'All':'')](selector);
+		}
+
+		function getValue() {
+			var arr = Array.prototype.map.call($('.tag', true), function(tag) {
+					return tag.textContent;
+				}),
+				v = base.input.value;
+			if (v) {
+				arr.push(v);
+			}
+			return arr.join(',');
 		}
 
 		function save() {
-			input.value = Array.prototype.map.call($('.tag', true), function(tag) {
-				return tag.textContent;
-			}).join(',');
+			input.value = getValue();
 			input.dispatchEvent(new Event('change'));
 		}
 
@@ -48,11 +56,11 @@
 					return false;
 				}
 			}
-			base.insertBefore(makeEl('span', 'tag', text), base.input).setAttribute('data-tag',text);
+			base.insertBefore(createElement('span', 'tag', text), base.input).setAttribute('data-tag',text);
 		}
 
 		function select(el) {
-			var selectedTag = $('.tag.selected');
+			var selectedTag = $('.selected');
 			if (selectedTag) selectedTag.classList.remove('selected');
 			if (el) el.classList.add('selected');
 		}
@@ -66,15 +74,26 @@
 			) + 'px';
 		}
 
-		function savePartialInput(input) {
-			if (addTag(input.value)!==false) {
+		function savePartialInput() {
+			if (addTag(base.input.value)!==false) {
+				base.input.value = '';
 				save();
-				input.value = '';
 				width();
 			}
 		}
 
-		var base = makeEl('div', 'tags-input'),
+		function refocus(e) {
+			if (e.target.classList.contains('tag')) select(e.target);
+			if (e.target===base.input) {
+				select();
+				return;
+			}
+			base.input.focus();
+			e.preventDefault();
+			return false;
+		}
+
+		var base = createElement('div', 'tags-input'),
 			sib = input.nextSibling;
 
 		input.parentNode[sib?'insertBefore':'appendChild'](base, sib);
@@ -82,29 +101,29 @@
 		input.style.cssText = 'position:absolute;left:0;top:-99px;width:1px;height:1px;opacity:0.01;';
 		input.tabIndex = -1;
 
-		base.input = makeEl('input');
+		base.input = createElement('input');
 		base.input.setAttribute('type', 'text');
 		base.input.placeholder = input.placeholder;
 		base.input.pattern = input.pattern;
 		base.appendChild(base.input);
 
 		delete input.pattern;
-		input.onfocus = function() {
+		input.addEventListener('focus', function() {
 			base.input.focus();
-		};
+		});
 
-		base.input.onfocus = function() {
+		base.input.addEventListener('focus', function() {
 			base.classList.add('focus');
 			select();
-		};
+		});
 
-		base.input.onblur = function() {
+		base.input.addEventListener('blur', function() {
 			base.classList.remove('focus');
 			select();
-			savePartialInput(this);
-		};
+			savePartialInput();
+		});
 
-		base.input.onkeydown = function(e) {
+		base.input.addEventListener('keydown', function(e) {
 			var key = e.keyCode || e.which,
 				selectedTag = $('.tag.selected'),
 				pos = this.selectionStart===this.selectionEnd && this.selectionStart,
@@ -114,7 +133,7 @@
 
 			if (key===ENTER || key===COMMA || key===TAB) {
 				if (!this.value && key!==COMMA) return;
-				savePartialInput(this);
+				savePartialInput();
 			}
 			else if (key===DELETE && selectedTag) {
 				if (selectedTag.nextSibling!==base.input) select(selectedTag.nextSibling);
@@ -156,31 +175,24 @@
 				select(selectedTag.nextSibling);
 			}
 			else {
-				// If we don't have any tags yet, update the first tag live as the user types
-				// This means that users who only want one thing don't have to enter commas
-				if ( ! $('.tag', true).length ) {
-					input.value = base.input.value;
-					input.dispatchEvent(new Event('change'));
-				}
 				return select();
 			}
 
 			e.preventDefault();
 			return false;
-		};
+		});
 
-		base.onmousedown = base.ontouchstart = function(e) {
-			if (e.target.classList.contains('tag')) select(e.target);
-			if (e.target===base.input) {
-				select();
-				return;
-			}
-			base.input.focus();
-			e.preventDefault();
-			return false;
-		};
+		// Proxy "input" (live change) events , update the first tag live as the user types
+		// This means that users who only want one thing don't have to enter commas
+		base.input.addEventListener('input', function(e) {
+			input.value = getValue();
+			input.dispatchEvent(new Event('input'));
+		});
 
-		input.value.split(',').forEach(add);
+		base.addEventListener('mousedown', refocus);
+		base.addEventListener('touchstart', refocus);
+
+		input.value.split(',').forEach(addTag);
 		width();
 	}
 
