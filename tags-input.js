@@ -10,8 +10,6 @@
 	}
 }(this, function() {
 
-	var log = console.log.bind(console);
-
 	var COMMA = 188,
 		LEFT = 37,
 		RIGHT = 39,
@@ -41,7 +39,7 @@
 			input.dispatchEvent(new Event('change'));
 		}
 
-		function addTag(text) {
+		function shouldAddTag(text) {
 			if (!(text=text.trim())) return false;
 			if (!input.getAttribute('duplicates')) {
 				var d = $('[data-tag="'+text+'"]');
@@ -51,6 +49,9 @@
 					return false;
 				}
 			}
+		}
+
+		function addTag(text){
 			base.insertBefore(makeEl('span', 'tag', text), base.input).setAttribute('data-tag',text);
 		}
 
@@ -67,12 +68,18 @@
 				base.offsetWidth-(last?(last.offsetLeft+last.offsetWidth):5)-5,
 				base.offsetWidth/4
 			) + 'px';
+			base.input.style.display = 'inline-block';
 		}
 
 		function savePartialInput(input) {
-			if (addTag(input.value)!==false) {
+			var newValue = input.value;
+			if (shouldAddTag(newValue)!==false) {
 				save();
 				input.value = '';
+				// Make input not displayed so it doesn't drop down onto new line
+				base.input.style.display = 'none';
+				addTag(newValue);
+				// Now we've added the tag, we can calculate a reasonable width for the input
 				width();
 			}
 		}

@@ -43,22 +43,22 @@
 }
 
 .tags-input input {
-	-webkit-appearance: none !important;
-	-moz-appearance: none !important;
-	appearance: none !important;
-	display: inline-block !important;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	display: inline-block;
 	padding: 3px;
-	margin: 0 !important;
-	background: none !important;
-	border: none !important;
-	-webkit-box-shadow: none !important;
-	-moz-box-shadow: none !important;
-	box-shadow: none !important;
-	font: inherit !important;
-	font-size: 100% !important;
-	-webkit-outline: none !important;
-	-moz-outline: none !important;
-	outline: none !important;
+	margin: 0;
+	background: none;
+	border: none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	font: inherit;
+	font-size: 100%;
+	-webkit-outline: none;
+	-moz-outline: none;
+	outline: none;
 }
 
 .tags-input .selected ~ input {
