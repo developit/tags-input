@@ -216,18 +216,16 @@
 				select(selectedTag.nextSibling);
 			}
 			else {
+				// If there are no tags yet, update the original input as the user types -
+				// so that users who only want one thing don't have to enter commas
+				if ( ! $('.tag', true).length ) {
+					originalInput.value = getValue();
+					originalInput.dispatchEvent(new Event('originalInput'));
+				}
 				return select();
 			}
-
 			e.preventDefault();
 			return false;
-		});
-
-		// Proxy "input" (live change) events , update the first tag live as the user types
-		// This means that users who only want one thing don't have to enter commas
-		base.input.addEventListener('input', function(e) {
-			originalInput.value = getValue();
-			originalInput.dispatchEvent(new Event('originalInput'));
 		});
 
 		base.addEventListener('mousedown', refocus);
