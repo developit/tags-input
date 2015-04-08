@@ -17,7 +17,7 @@
     "input",
     "polyfill"
   ],
-  "license": "BSD 3-Clause",
+  "license": "MIT",
   "ignore": [
     "**/.*",
     "**/*.min.js",
