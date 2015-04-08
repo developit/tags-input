@@ -10,7 +10,7 @@
 	}
 }(this, function() {
 
-	var SEPERATOR = ','
+	var SEPERATOR = ',';
 
 	var BACKSPACE = 8,
 		TAB = 9,
@@ -35,6 +35,7 @@
 			return base['querySelector'+(all?'All':'')](selector);
 		}
 
+		// Get value of everything entered this far - existing tags, new input, etc.
 		function getValue() {
 			var arr = Array.prototype.map.call($('.tag', true), function(tag) {
 					return tag.textContent;
@@ -51,27 +52,35 @@
 			input.dispatchEvent(new Event('change'));
 		}
 
-		// Return false if no need to add a tag
-		function addTag(text) {
-			text = text.trim()
-			// Ignore if text is empty
-			if ( ! ( text ) ) return false;
-			// For duplicates, briefly highlight the existing tag
-			if (!input.getAttribute('duplicates')) {
-				var exisingTag = $('[data-tag="'+text+'"]');
-				if (exisingTag) {
-					exisingTag.classList.add('dupe');
-					setTimeout(function(){ exisingTag.classList.remove('dupe'); }, 100);
-					return false;
-				}
-			}
-			// Add multiple tags if the user pastes in data with SEPERATOR already in it.
+		// text:String data entered by user in input element OR existing element value when loading
+		// Return true if we needed to add at least one tag
+		function addTags(text) {
+
+			var addedATag = false;
+			// Add multiple tags if necessary, eg if the user pastes in data with SEPERATOR already in it.
 			var newTagTexts = text.split(SEPERATOR)
+
 			newTagTexts.forEach(function(newTagText){
 				newTagText = newTagText.trim()
+				// Ignore if newTagText is empty
+				if ( ! ( newTagText ) ) return;
+				// For duplicates, briefly highlight the existing tag
+				log("Checking for dupe", newTagText)
+				if ( ! input.getAttribute('duplicates') ) {
+					var existingTag = $('[data-tag="'+newTagText+'"]');
+					if (existingTag) {
+						existingTag.classList.add('dupe');
+						setTimeout(function(){
+							existingTag.classList.remove('dupe');
+						}, 100);
+						return;
+					}
+				}
 				var tagElement = createElement('span', 'tag', newTagText, {tag: newTagText})
 				base.insertBefore(tagElement, base.input);
+				addedATag = true
 			})
+			return addedATag;
 		}
 
 		function select(el) {
@@ -90,7 +99,7 @@
 		}
 
 		function savePartialInput() {
-			if (addTag(base.input.value)!==false) {
+			if ( addTags(base.input.value) ) {
 				base.input.value = '';
 				save();
 				setInputWidth();
@@ -208,7 +217,7 @@
 		base.addEventListener('touchstart', refocus);
 
 		// Add tags for existing values
-		input.value.split(SEPERATOR).forEach(addTag);
+		addTags(input.value);
 		setInputWidth();
 	}
 
