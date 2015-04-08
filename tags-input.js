@@ -10,6 +10,8 @@
 	}
 }(this, function() {
 
+	var SEPERATOR = ','
+
 	var BACKSPACE = 8,
 		TAB = 9,
 		ENTER = 13,
@@ -19,10 +21,13 @@
 		COMMA = 188;
 
 	function tagsInput(input) {
-		function createElement(type, name, text) {
+		function createElement(type, name, text, attributes) {
 			var el = document.createElement(type);
 			if (name) el.className = name;
 			if (text) el.textContent = text;
+			for ( var attributeName in attributes ) {
+				el.setAttribute('data-'+attributeName, attributes[attributeName])
+			}
 			return el;
 		}
 
@@ -38,7 +43,7 @@
 			if (v) {
 				arr.push(v);
 			}
-			return arr.join(',');
+			return arr.join(SEPERATOR);
 		}
 
 		function save() {
@@ -46,17 +51,27 @@
 			input.dispatchEvent(new Event('change'));
 		}
 
+		// Return false if no need to add a tag
 		function addTag(text) {
-			if (!(text=text.trim())) return false;
+			text = text.trim()
+			// Ignore if text is empty
+			if ( ! ( text ) ) return false;
+			// For duplicates, briefly highlight the existing tag
 			if (!input.getAttribute('duplicates')) {
-				var d = $('[data-tag="'+text+'"]');
-				if (d) {
-					d.classList.add('dupe');
-					setTimeout(function(){ d.classList.remove('dupe'); }, 100);
+				var exisingTag = $('[data-tag="'+text+'"]');
+				if (exisingTag) {
+					exisingTag.classList.add('dupe');
+					setTimeout(function(){ exisingTag.classList.remove('dupe'); }, 100);
 					return false;
 				}
 			}
-			base.insertBefore(createElement('span', 'tag', text), base.input).setAttribute('data-tag',text);
+			// Add multiple tags if the user pastes in data with SEPERATOR already in it.
+			var newTagTexts = text.split(SEPERATOR)
+			newTagTexts.forEach(function(newTagText){
+				newTagText = newTagText.trim()
+				var tagElement = createElement('span', 'tag', newTagText, {tag: newTagText})
+				base.insertBefore(tagElement, base.input);
+			})
 		}
 
 		function select(el) {
@@ -65,7 +80,7 @@
 			if (el) el.classList.add('selected');
 		}
 
-		function width() {
+		function setInputWidth() {
 			var last = [].pop.call($('.tag',true));
 			if (!base.offsetWidth) return;
 			base.input.style.width = Math.max(
@@ -78,7 +93,7 @@
 			if (addTag(base.input.value)!==false) {
 				base.input.value = '';
 				save();
-				width();
+				setInputWidth();
 			}
 		}
 
@@ -129,7 +144,7 @@
 				pos = this.selectionStart===this.selectionEnd && this.selectionStart,
 				last = [].pop.call($('.tag',true));
 
-			width();
+			setInputWidth();
 
 			if (key===ENTER || key===COMMA || key===TAB) {
 				if (!this.value && key!==COMMA) return;
@@ -138,14 +153,14 @@
 			else if (key===DELETE && selectedTag) {
 				if (selectedTag.nextSibling!==base.input) select(selectedTag.nextSibling);
 				base.removeChild(selectedTag);
-				width();
+				setInputWidth();
 				save();
 			}
 			else if (key===BACKSPACE) {
 				if (selectedTag) {
 					select(selectedTag.previousSibling);
 					base.removeChild(selectedTag);
-					width();
+					setInputWidth();
 					save();
 				}
 				else if (last && pos===0) {
@@ -192,8 +207,9 @@
 		base.addEventListener('mousedown', refocus);
 		base.addEventListener('touchstart', refocus);
 
-		input.value.split(',').forEach(addTag);
-		width();
+		// Add tags for existing values
+		input.value.split(SEPERATOR).forEach(addTag);
+		setInputWidth();
 	}
 
 	// make life easier:
