@@ -225,7 +225,7 @@
 
 		// Proxy "input" (live change) events , update the first tag live as the user types
 		// This means that users who only want one thing don't have to enter commas
-		base.input.addEventListener('originalInput', function(e) {
+		base.input.addEventListener('input', function(e) {
 			originalInput.value = getValue();
 			originalInput.dispatchEvent(new Event('originalInput'));
 		});
