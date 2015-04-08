@@ -66,6 +66,7 @@
 			// Add multiple tags if the user pastes in data with ',' already in it.
 			var newTagTexts = text.split(',')
 			newTagTexts.forEach(function(newTagText){
+				newTagText = newTagText.trim()
 				var tagElement = createElement('span', 'tag', newTagText, {tag: newTagText})
 				base.insertBefore(tagElement, base.input);
 			})
