@@ -20,7 +20,7 @@
 		DELETE = 46,
 		COMMA = 188;
 
-	function tagsInput(input) {
+	function tagsInput(originalInput) {
 		function createElement(type, name, text, attributes) {
 			var el = document.createElement(type);
 			if (name) {
@@ -52,8 +52,8 @@
 		}
 
 		function save() {
-			input.value = getValue();
-			input.dispatchEvent(new Event('change'));
+			originalInput.value = getValue();
+			originalInput.dispatchEvent(new Event('change'));
 		}
 
 		// text:String data entered by user in input element OR existing element value when loading
@@ -71,7 +71,7 @@
 					return;
 				}
 				// For duplicates, briefly highlight the existing tag
-				if ( ! input.getAttribute('duplicates') ) {
+				if ( ! originalInput.getAttribute('duplicates') ) {
 					var existingTag = $('[data-tag="'+newTagText+'"]');
 					if (existingTag) {
 						existingTag.classList.add('dupe');
@@ -131,21 +131,21 @@
 		}
 
 		var base = createElement('div', 'tags-input'),
-			sib = input.nextSibling;
+			sib = originalInput.nextSibling;
 
-		input.parentNode[sib?'insertBefore':'appendChild'](base, sib);
+		originalInput.parentNode[sib?'insertBefore':'appendChild'](base, sib);
 
-		input.style.cssText = 'position:absolute;left:0;top:-99px;width:1px;height:1px;opacity:0.01;';
-		input.tabIndex = -1;
+		originalInput.style.cssText = 'position:absolute;left:0;top:-99px;width:1px;height:1px;opacity:0.01;';
+		originalInput.tabIndex = -1;
 
 		base.input = createElement('input');
 		base.input.setAttribute('type', 'text');
-		base.input.placeholder = input.placeholder;
-		base.input.pattern = input.pattern;
+		base.input.placeholder = originalInput.placeholder;
+		base.input.pattern = originalInput.pattern;
 		base.appendChild(base.input);
 
-		delete input.pattern;
-		input.addEventListener('focus', function() {
+		delete originalInput.pattern;
+		originalInput.addEventListener('focus', function() {
 			base.input.focus();
 		});
 
@@ -225,16 +225,16 @@
 
 		// Proxy "input" (live change) events , update the first tag live as the user types
 		// This means that users who only want one thing don't have to enter commas
-		base.input.addEventListener('input', function(e) {
-			input.value = getValue();
-			input.dispatchEvent(new Event('input'));
+		base.input.addEventListener('originalInput', function(e) {
+			originalInput.value = getValue();
+			originalInput.dispatchEvent(new Event('originalInput'));
 		});
 
 		base.addEventListener('mousedown', refocus);
 		base.addEventListener('touchstart', refocus);
 
 		// Add tags for existing values
-		addTags(input.value);
+		addTags(originalInput.value);
 		setInputWidth();
 	}
 
