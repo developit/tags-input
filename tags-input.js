@@ -48,8 +48,9 @@
 
 		// Return false if no need to add a tag
 		function addTag(text) {
-			if (!(text=text.trim())) return false;
-            // For duplicates, briefly highlight the existing tag
+			text = text.trim()
+			// Ignore if text is empty
+			if ( ! ( text ) ) return false;
 			// For duplicates, briefly highlight the existing tag
 			if (!input.getAttribute('duplicates')) {
 				var exisingTag = $('[data-tag="'+text+'"]');
