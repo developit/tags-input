@@ -23,10 +23,14 @@
 	function tagsInput(input) {
 		function createElement(type, name, text, attributes) {
 			var el = document.createElement(type);
-			if (name) el.className = name;
-			if (text) el.textContent = text;
+			if (name) {
+				el.className = name;
+			}
+			if (text) {
+				el.textContent = text;
+			}
 			for ( var attributeName in attributes ) {
-				el.setAttribute('data-'+attributeName, attributes[attributeName])
+				el.setAttribute('data-'+attributeName, attributes[attributeName]);
 			}
 			return el;
 		}
@@ -58,14 +62,15 @@
 
 			var addedATag = false;
 			// Add multiple tags if necessary, eg if the user pastes in data with SEPERATOR already in it.
-			var newTagTexts = text.split(SEPERATOR)
+			var newTagTexts = text.split(SEPERATOR);
 
 			newTagTexts.forEach(function(newTagText){
-				newTagText = newTagText.trim()
+				newTagText = newTagText.trim();
 				// Ignore if newTagText is empty
-				if ( ! ( newTagText ) ) return;
+				if ( ! ( newTagText ) ) {
+					return;
+				}
 				// For duplicates, briefly highlight the existing tag
-				log("Checking for dupe", newTagText)
 				if ( ! input.getAttribute('duplicates') ) {
 					var existingTag = $('[data-tag="'+newTagText+'"]');
 					if (existingTag) {
@@ -76,22 +81,28 @@
 						return;
 					}
 				}
-				var tagElement = createElement('span', 'tag', newTagText, {tag: newTagText})
+				var tagElement = createElement('span', 'tag', newTagText, {tag: newTagText});
 				base.insertBefore(tagElement, base.input);
-				addedATag = true
-			})
+				addedATag = true;
+			});
 			return addedATag;
 		}
 
 		function select(el) {
 			var selectedTag = $('.selected');
-			if (selectedTag) selectedTag.classList.remove('selected');
-			if (el) el.classList.add('selected');
+			if (selectedTag) {
+				selectedTag.classList.remove('selected');
+			}
+			if (el) {
+				el.classList.add('selected');
+			}
 		}
 
 		function setInputWidth() {
 			var last = [].pop.call($('.tag',true));
-			if (!base.offsetWidth) return;
+			if (!base.offsetWidth) {
+				return;
+			}
 			base.input.style.width = Math.max(
 				base.offsetWidth-(last?(last.offsetLeft+last.offsetWidth):5)-5,
 				base.offsetWidth/4
@@ -107,7 +118,9 @@
 		}
 
 		function refocus(e) {
-			if (e.target.classList.contains('tag')) select(e.target);
+			if (e.target.classList.contains('tag')) {
+				select(e.target);
+			}
 			if (e.target===base.input) {
 				select();
 				return;
@@ -156,11 +169,15 @@
 			setInputWidth();
 
 			if (key===ENTER || key===COMMA || key===TAB) {
-				if (!this.value && key!==COMMA) return;
+				if (!this.value && key!==COMMA) {
+					return;
+				}
 				savePartialInput();
 			}
 			else if (key===DELETE && selectedTag) {
-				if (selectedTag.nextSibling!==base.input) select(selectedTag.nextSibling);
+				if (selectedTag.nextSibling!==base.input) {
+					select(selectedTag.nextSibling);
+				}
 				base.removeChild(selectedTag);
 				setInputWidth();
 				save();
