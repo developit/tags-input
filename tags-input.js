@@ -48,11 +48,12 @@
 
 		function addTag(text) {
 			if (!(text=text.trim())) return false;
+            // For duplicates, briefly highlight the existing tag
 			if (!input.getAttribute('duplicates')) {
-				var d = $('[data-tag="'+text+'"]');
-				if (d) {
-					d.classList.add('dupe');
-					setTimeout(function(){ d.classList.remove('dupe'); }, 100);
+				var exisingTag = $('[data-tag="'+text+'"]');
+				if (exisingTag) {
+					exisingTag.classList.add('dupe');
+					setTimeout(function(){ exisingTag.classList.remove('dupe'); }, 100);
 					return false;
 				}
 			}
