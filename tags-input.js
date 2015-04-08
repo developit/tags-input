@@ -65,7 +65,7 @@
 			if (el) el.classList.add('selected');
 		}
 
-		function width() {
+		function setInputWidth() {
 			var last = [].pop.call($('.tag',true));
 			if (!base.offsetWidth) return;
 			base.input.style.width = Math.max(
@@ -78,7 +78,7 @@
 			if (addTag(base.input.value)!==false) {
 				base.input.value = '';
 				save();
-				width();
+				setInputWidth();
 			}
 		}
 
@@ -129,7 +129,7 @@
 				pos = this.selectionStart===this.selectionEnd && this.selectionStart,
 				last = [].pop.call($('.tag',true));
 
-			width();
+			setInputWidth();
 
 			if (key===ENTER || key===COMMA || key===TAB) {
 				if (!this.value && key!==COMMA) return;
@@ -138,14 +138,14 @@
 			else if (key===DELETE && selectedTag) {
 				if (selectedTag.nextSibling!==base.input) select(selectedTag.nextSibling);
 				base.removeChild(selectedTag);
-				width();
+				setInputWidth();
 				save();
 			}
 			else if (key===BACKSPACE) {
 				if (selectedTag) {
 					select(selectedTag.previousSibling);
 					base.removeChild(selectedTag);
-					width();
+					setInputWidth();
 					save();
 				}
 				else if (last && pos===0) {
@@ -193,7 +193,7 @@
 		base.addEventListener('touchstart', refocus);
 
 		input.value.split(',').forEach(addTag);
-		width();
+		setInputWidth();
 	}
 
 	// make life easier:
