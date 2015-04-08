@@ -19,10 +19,13 @@
 		COMMA = 188;
 
 	function tagsInput(input) {
-		function createElement(type, name, text) {
+		function createElement(type, name, text, attributes) {
 			var el = document.createElement(type);
 			if (name) el.className = name;
 			if (text) el.textContent = text;
+			for ( var attributeName in attributes ) {
+				el.setAttribute('data-'+attributeName, attributes[attributeName])
+			}
 			return el;
 		}
 
@@ -60,7 +63,7 @@
 					return false;
 				}
 			}
-			base.insertBefore(createElement('span', 'tag', text), base.input).setAttribute('data-tag',text);
+			base.insertBefore(createElement('span', 'tag', text, {tag: text}), base.input);
 		}
 
 		function select(el) {
