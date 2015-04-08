@@ -63,7 +63,12 @@
 					return false;
 				}
 			}
-			base.insertBefore(createElement('span', 'tag', text, {tag: text}), base.input);
+			// Add multiple tags if the user pastes in data with ',' already in it.
+			var newTagTexts = text.split(',')
+			newTagTexts.forEach(function(newTagText){
+				var tagElement = createElement('span', 'tag', newTagText, {tag: newTagText})
+				base.insertBefore(tagElement, base.input);
+			})
 		}
 
 		function select(el) {
