@@ -228,6 +228,13 @@
 			return false;
 		});
 
+		base.input.addEventListener('paste', function(e) {
+			// Wait one tick (ie 0) so base.input gets filled from the paste, then save it.
+			setTimeout(function(){
+				savePartialInput();
+			}, 0)
+		});
+
 		base.addEventListener('mousedown', refocus);
 		base.addEventListener('touchstart', refocus);
 
