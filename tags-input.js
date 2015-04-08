@@ -10,6 +10,8 @@
 	}
 }(this, function() {
 
+	var SEPERATOR = ','
+
 	var BACKSPACE = 8,
 		TAB = 9,
 		ENTER = 13,
@@ -41,7 +43,7 @@
 			if (v) {
 				arr.push(v);
 			}
-			return arr.join(',');
+			return arr.join(SEPERATOR);
 		}
 
 		function save() {
@@ -63,8 +65,8 @@
 					return false;
 				}
 			}
-			// Add multiple tags if the user pastes in data with ',' already in it.
-			var newTagTexts = text.split(',')
+			// Add multiple tags if the user pastes in data with SEPERATOR already in it.
+			var newTagTexts = text.split(SEPERATOR)
 			newTagTexts.forEach(function(newTagText){
 				newTagText = newTagText.trim()
 				var tagElement = createElement('span', 'tag', newTagText, {tag: newTagText})
@@ -205,7 +207,8 @@
 		base.addEventListener('mousedown', refocus);
 		base.addEventListener('touchstart', refocus);
 
-		input.value.split(',').forEach(addTag);
+		// Add tags for existing values
+		input.value.split(SEPERATOR).forEach(addTag);
 		setInputWidth();
 	}
 
