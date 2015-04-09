@@ -220,7 +220,7 @@
 				// so that users who only want one thing don't have to enter commas
 				if ( ! $('.tag', true).length ) {
 					originalInput.value = getValue();
-					originalInput.dispatchEvent(new Event('originalInput'));
+					originalInput.dispatchEvent(new Event('input'));
 				}
 				return select();
 			}
@@ -232,7 +232,7 @@
 			// Wait one tick (ie 0) so base.input gets filled from the paste, then save it.
 			setTimeout(function(){
 				savePartialInput();
-			}, 0)
+			}, 0);
 		});
 
 		base.addEventListener('mousedown', refocus);
