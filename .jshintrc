@@ -1,6 +1,3 @@
 {
-  "predef": [
-    // Node comes with console, so does every modern browser
-    "console"
-  ]
+	"browser" : true
 }
