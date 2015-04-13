@@ -138,10 +138,15 @@
 		originalInput.style.cssText = 'position:absolute;left:0;top:-99px;width:1px;height:1px;opacity:0.01;';
 		originalInput.tabIndex = -1;
 
-		base.input = createElement('input');
-		base.input.setAttribute('type', 'text');
-		base.input.placeholder = originalInput.placeholder;
-		base.input.pattern = originalInput.pattern;
+		base.input = createElement('input', null, null, {
+			'type': 'text',
+			'placeholder': originalInput.placeholder,
+			'pattern': originalInput.pattern,
+			'spellcheck': originalInput.spellcheck,
+			'autocorrect': originalInput.autocorrect,
+			'autocapitalize': originalInput.autocapitalize,
+			'autosuggest': originalInput.autocapitalize
+		});
 		base.appendChild(base.input);
 
 		delete originalInput.pattern;
