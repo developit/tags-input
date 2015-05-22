@@ -226,8 +226,12 @@
 				// If there are no tags yet, update the original input as the user types -
 				// so that users who only want one thing don't have to enter commas
 				if ( ! $('.tag', true).length ) {
-					originalInput.value = getValue();
-					originalInput.dispatchEvent(new Event('input'));
+					// Wait one tick (ie 0) so the key gets added to the input
+					setTimeout(function(){
+						originalInput.value = getValue();
+						originalInput.dispatchEvent(new Event('input'));
+					}, 0);
+
 				}
 				return select();
 			}
