@@ -39,16 +39,18 @@
 			return base['querySelector'+(all?'All':'')](selector);
 		}
 
-		// Get value of everything entered this far - existing tags, new input, etc.
+		// Get value of everything entered thus far - both existing tags and new input.
 		function getValue() {
-			var arr = Array.prototype.map.call($('.tag', true), function(tag) {
+			// Tags
+			var tagValues = Array.prototype.map.call($('.tag', true), function(tag) {
 					return tag.textContent;
 				}),
-				v = base.input.value;
-			if (v) {
-				arr.push(v);
+				// In progress input
+				inProgress = base.input.value;
+			if (inProgress) {
+				tagValues.push(inProgress);
 			}
-			return arr.join(SEPERATOR);
+			return tagValues.join(SEPERATOR);
 		}
 
 		function save() {
