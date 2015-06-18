@@ -39,6 +39,13 @@
 			return base['querySelector'+(all?'All':'')](selector);
 		}
 
+		function getLastElement(nodeList){
+			if ( nodeList ) {
+				return nodeList[nodeList.length - 1];
+			}
+			return null;
+		}
+
 		// Get value of everything entered thus far - both existing tags and new input.
 		function getValue() {
 			// Tags
@@ -101,12 +108,12 @@
 		}
 
 		function setInputWidth() {
-			var last = [].pop.call($('.tag',true));
-			if (!base.offsetWidth) {
+			if ( ! base.offsetWidth) {
 				return;
 			}
+			var lastTag = getLastElement($('.tag', true));
 			base.input.style.width = Math.max(
-				base.offsetWidth-(last?(last.offsetLeft+last.offsetWidth):5)-5,
+				base.offsetWidth-(lastTag?(lastTag.offsetLeft+lastTag.offsetWidth):5)-5,
 				base.offsetWidth/4
 			) + 'px';
 		}
@@ -171,7 +178,7 @@
 			var key = e.keyCode || e.which,
 				selectedTag = $('.tag.selected'),
 				pos = this.selectionStart===this.selectionEnd && this.selectionStart,
-				last = [].pop.call($('.tag',true));
+				lastTag = getLastElement($('.tag', true));
 
 			setInputWidth();
 
@@ -196,8 +203,8 @@
 					setInputWidth();
 					save();
 				}
-				else if (last && pos===0) {
-					select(last);
+				else if (lastTag && pos===0) {
+					select(lastTag);
 				}
 				else {
 					return;
@@ -213,7 +220,7 @@
 					return;
 				}
 				else {
-					select(last);
+					select(lastTag);
 				}
 			}
 			else if (key===RIGHT) {
