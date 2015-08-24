@@ -1,6 +1,5 @@
 {
   "modules": "umd",
-  "moduleId": "tags-input",
   "loose": "all",
   "compact": true,
   "comments": false
