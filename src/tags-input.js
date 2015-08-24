@@ -22,7 +22,7 @@ export default function tagsInput(input) {
 	}
 
 	function $(selector, all) {
-		return all ? Array.prototype.slice.call(base.querySelectorAll(selector)) : base.querySelector(selector);
+		return all===true ? Array.prototype.slice.call(base.querySelectorAll(selector)) : base.querySelector(selector);
 	}
 
 	function getValue() {
@@ -30,6 +30,11 @@ export default function tagsInput(input) {
 			.map( tag => tag.textContent )
 			.concat(base.input.value || [])
 			.join(SEPERATOR);
+	}
+
+	function setValue(value) {
+		$('.tag', true).forEach( t => base.removeChild(t) );
+		savePartialInput(value);
 	}
 
 	function save() {
@@ -79,8 +84,11 @@ export default function tagsInput(input) {
 		) + 'px';
 	}
 
-	function savePartialInput() {
-		if (addTag(base.input.value)!==false) {
+	function savePartialInput(value) {
+		if (typeof value!=='string' && !Array.isArray(value)) {
+			value = base.input.value;
+		}
+		if (addTag(value)!==false) {
 			base.input.value = '';
 			save();
 			setInputWidth();
@@ -105,13 +113,13 @@ export default function tagsInput(input) {
 	base.input = createElement('input');
 	base.input.setAttribute('type', 'text');
 	COPY_PROPS.forEach( prop => {
-		if (input.hasOwnProperty(prop)) {
+		if (input[prop]!==base.input[prop]) {
 			base.input[prop] = input[prop];
+			try { delete input[prop]; }catch(e){}
 		}
 	});
 	base.appendChild(base.input);
 
-	delete input.pattern;
 	input.addEventListener('focus', () => {
 		base.input.focus();
 	});
@@ -128,15 +136,16 @@ export default function tagsInput(input) {
 	});
 
 	base.input.addEventListener('keydown', e => {
-		let key = e.keyCode || e.which,
+		let el = base.input,
+			key = e.keyCode || e.which,
 			selectedTag = $('.tag.selected'),
-			pos = this.selectionStart===this.selectionEnd && this.selectionStart,
+			pos = el.selectionStart===el.selectionEnd && el.selectionStart,
 			last = $('.tag',true).pop();
 
 		setInputWidth();
 
 		if (key===ENTER || key===COMMA || key===TAB) {
-			if (!this.value && key!==COMMA) return;
+			if (!el.value && key!==COMMA) return;
 			savePartialInput();
 		}
 		else if (key===DELETE && selectedTag) {
@@ -173,9 +182,7 @@ export default function tagsInput(input) {
 			}
 		}
 		else if (key===RIGHT) {
-			if (!selectedTag) {
-				return;
-			}
+			if (!selectedTag) return;
 			select(selectedTag.nextSibling);
 		}
 		else {
@@ -194,16 +201,16 @@ export default function tagsInput(input) {
 	});
 
 	// One tick after pasting, parse pasted text as CSV:
-	base.input.addEventListener('paste', () => {
-		setTimeout( () => savePartialInput(), 0);
-	});
+	base.input.addEventListener('paste', () => setTimeout(savePartialInput, 0));
 
 	base.addEventListener('mousedown', refocus);
 	base.addEventListener('touchstart', refocus);
 
+	base.setValue = setValue;
+	base.getValue = getValue;
+
 	// Add tags for existing values
-	input.value.split(SEPERATOR).forEach(addTag);
-	setInputWidth();
+	savePartialInput();
 }
 
 // make life easier:
