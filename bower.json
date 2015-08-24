@@ -21,6 +21,7 @@
   "ignore": [
     "**/.*",
     "**/*.min.js",
+    "src",
     "bower_components",
     "LICENSE",
     "package.json",
