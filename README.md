@@ -12,6 +12,7 @@ tags-input
 - Works with HTML5 `pattern` and `placeholder` attributes, too!
 - Native [`change`](https://developer.mozilla.org/en-US/docs/Web/Events/change) and [`input`](https://developer.mozilla.org/en-US/docs/Web/Events/input) _("live" change)_ events.
 - Using [preact](https://github.com/developit/preact)? (or react?) There's a wrapper called [preact-token-input](https://github.com/developit/preact-token-input)
+- Works in modern browsers and IE10+
 
 **Screenshot:**
 
