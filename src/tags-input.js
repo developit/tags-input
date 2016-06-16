@@ -86,9 +86,8 @@ export default function tagsInput(input) {
 
 	function savePartialInput(value) {
 		if (typeof value!=='string' && !Array.isArray(value)) {
-			// If the base input does not contain a value, default to the original
-			// element passed
-			value = base.input.value || input.value;
+			// If the base input does not contain a value, default to the original element passed
+			value = base.input.value;
 		}
 		if (addTag(value)!==false) {
 			base.input.value = '';
@@ -212,7 +211,7 @@ export default function tagsInput(input) {
 	base.getValue = getValue;
 
 	// Add tags for existing values
-	savePartialInput();
+	savePartialInput(input.value);
 }
 
 // make life easier:
