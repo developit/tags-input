@@ -104,6 +104,16 @@ export default function tagsInput(input) {
 		return false;
 	}
 
+	function caretAtStart(el) {
+		try {
+			return el.selectionStart === 0 && el.selectionEnd === 0;
+		}
+		catch(e) {
+			return el.value === '';
+		}
+	}
+
+
 	let base = createElement('div', 'tags-input'),
 		sib = input.nextSibling;
 
@@ -145,7 +155,7 @@ export default function tagsInput(input) {
 		let el = base.input,
 			key = e.keyCode || e.which,
 			selectedTag = $('.tag.selected'),
-			pos = el.selectionStart===el.selectionEnd && el.selectionStart,
+			atStart = caretAtStart(el),
 			last = $('.tag',true).pop();
 
 		setInputWidth();
@@ -167,7 +177,7 @@ export default function tagsInput(input) {
 				setInputWidth();
 				save();
 			}
-			else if (last && pos===0) {
+			else if (last && atStart) {
 				select(last);
 			}
 			else {
@@ -180,7 +190,7 @@ export default function tagsInput(input) {
 					select(selectedTag.previousSibling);
 				}
 			}
-			else if (pos!==0) {
+			else if (!atStart) {
 				return;
 			}
 			else {
