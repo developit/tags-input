@@ -74,16 +74,6 @@ export default function tagsInput(input) {
 		if (el) el.classList.add('selected');
 	}
 
-	function setInputWidth() {
-		let last = $('.tag',true).pop(),
-			w = base.offsetWidth;
-		if (!w) return;
-		base.input.style.width = Math.max(
-			w - (last ? (last.offsetLeft+last.offsetWidth) : 5) - 5,
-			w/4
-		) + 'px';
-	}
-
 	function savePartialInput(value) {
 		if (typeof value!=='string' && !Array.isArray(value)) {
 			// If the base input does not contain a value, default to the original element passed
@@ -92,7 +82,6 @@ export default function tagsInput(input) {
 		if (addTag(value)!==false) {
 			base.input.value = '';
 			save();
-			setInputWidth();
 		}
 	}
 
@@ -143,7 +132,6 @@ export default function tagsInput(input) {
 			pos = el.selectionStart===el.selectionEnd && el.selectionStart,
 			last = $('.tag',true).pop();
 
-		setInputWidth();
 
 		if (key===ENTER || key===COMMA || key===TAB) {
 			if (!el.value && key!==COMMA) return;
@@ -152,14 +140,12 @@ export default function tagsInput(input) {
 		else if (key===DELETE && selectedTag) {
 			if (selectedTag.nextSibling!==base.input) select(selectedTag.nextSibling);
 			base.removeChild(selectedTag);
-			setInputWidth();
 			save();
 		}
 		else if (key===BACKSPACE) {
 			if (selectedTag) {
 				select(selectedTag.previousSibling);
 				base.removeChild(selectedTag);
-				setInputWidth();
 				save();
 			}
 			else if (last && pos===0) {
