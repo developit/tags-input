@@ -106,13 +106,18 @@ export default function tagsInput(input) {
 
 	let base = createElement('div', 'tags-input'),
 		sib = input.nextSibling;
+
 	input.parentNode[sib?'insertBefore':'appendChild'](base, sib);
 
 	input.style.cssText = 'position:absolute;left:0;top:-99px;width:1px;height:1px;opacity:0.01;';
 	input.tabIndex = -1;
 
+	let inputType = input.getAttribute('type');
+	if (!inputType || inputType === 'tags') {
+		inputType = 'text';
+	}
 	base.input = createElement('input');
-	base.input.setAttribute('type', 'text');
+	base.input.setAttribute('type', inputType);
 	COPY_PROPS.forEach( prop => {
 		if (input[prop]!==base.input[prop]) {
 			base.input[prop] = input[prop];
