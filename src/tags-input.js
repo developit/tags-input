@@ -3,10 +3,7 @@ const BACKSPACE = 8,
 	ENTER = 13,
 	LEFT = 37,
 	RIGHT = 39,
-	DELETE = 46,
-	COMMA = 188;
-
-const SEPERATOR = ',';
+	DELETE = 46;
 
 const COPY_PROPS = 'placeholder pattern spellcheck autocomplete autocapitalize autofocus accessKey accept lang minLength maxLength required'.split(' ');
 
@@ -29,7 +26,7 @@ export default function tagsInput(input) {
 		return $('.tag', true)
 			.map( tag => tag.textContent )
 			.concat(base.input.value || [])
-			.join(SEPERATOR);
+			.join(separator);
 	}
 
 	function setValue(value) {
@@ -45,7 +42,7 @@ export default function tagsInput(input) {
 	// Return false if no need to add a tag
 	function addTag(text) {
 		// Add multiple tags if the user pastes in data with SEPERATOR already in it
-		if (~text.indexOf(SEPERATOR)) text = text.split(SEPERATOR);
+		if (~text.indexOf(separator)) text = text.split(separator);
 		if (Array.isArray(text)) return text.forEach(addTag);
 
 		let tag = text && text.trim();
@@ -104,8 +101,22 @@ export default function tagsInput(input) {
 		return false;
 	}
 
+	function charFromKeyboardEvent(e) {
+		if ('key' in e) {
+			// most modern browsers
+			return e.key;
+		}
+		if ('keyIdentifier' in e) {
+			// Safari < 10
+			return String.fromCharCode(parseInt(event.keyIdentifier.slice(2), 16));
+		}
+		// other old/non-conforming browsers
+		return e.char;
+	}
 	let base = createElement('div', 'tags-input'),
-		sib = input.nextSibling;
+		sib = input.nextSibling,
+		separator = input.getAttribute('data-separator') || ',';
+
 	input.parentNode[sib?'insertBefore':'appendChild'](base, sib);
 
 	input.style.cssText = 'position:absolute;left:0;top:-99px;width:1px;height:1px;opacity:0.01;';
@@ -139,14 +150,15 @@ export default function tagsInput(input) {
 	base.input.addEventListener('keydown', e => {
 		let el = base.input,
 			key = e.keyCode || e.which,
+			char = charFromKeyboardEvent(e),
 			selectedTag = $('.tag.selected'),
 			pos = el.selectionStart===el.selectionEnd && el.selectionStart,
 			last = $('.tag',true).pop();
 
 		setInputWidth();
 
-		if (key===ENTER || key===COMMA || key===TAB) {
-			if (!el.value && key!==COMMA) return;
+		if (key===ENTER || key===TAB || char===separator) {
+			if (!el.value && char!==separator) return;
 			savePartialInput();
 		}
 		else if (key===DELETE && selectedTag) {
