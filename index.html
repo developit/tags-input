@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="tags-input.css">
+	<script type="text/javascript" src="tags-input.js"></script>
+	<style type="text/css">
+		body {
+			padding: 1em 3em;
+		}
+		form {
+			max-width: 40em;
+			margin: auto;
+		}
+		.tags-input {
+			width: 100%;
+			margin: 1em 0;
+		}
+	</style>
+</head>
+<body>
+	<form>
+		<label for='simple'>Simple</label>
+		<input id='simple' type='text'>
+		<label for='email'>Email</label>
+		<input id='email' type='email' data-separator=' '>
+		<label for='url'>URL</label>
+		<input id='url' type='url' data-separator=' '>
+	</form>
+	<script type="text/javascript">
+		for (let input of document.querySelectorAll('form input')) {
+			tagsInput(input);
+		}
+	</script>
+</body>
