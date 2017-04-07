@@ -58,6 +58,11 @@ export default function tagsInput(input) {
 			return false;
 		}
 
+		// Don't add if it's invalid (eg, for pattern=)
+		if ( ! base.input.checkValidity() ) {
+			return false;
+		}
+
 		// For duplicates, briefly highlight the existing tag
 		if ( ! input.getAttribute('duplicates') ) {
 			let exisingTag = $(`[data-tag="${tag}"]`);
