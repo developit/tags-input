@@ -17,12 +17,12 @@
     "url": "git://github.com/developit/tags-input.git"
   },
   "devDependencies": {
-    "babel": "^5.8.21",
+    "babel": "^6.23.0",
     "gzip-size": "^3.0.0",
     "jshint": "^2.8.0",
     "less": "^2.5.1",
     "less-plugin-autoprefix": "^1.4.2",
     "less-plugin-clean-css": "^1.5.1",
-    "pretty-bytes": "^2.0.1"
+    "pretty-bytes": "^4.0.2"
   }
 }
