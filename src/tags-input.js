@@ -45,12 +45,26 @@ export default function tagsInput(input) {
 	// Return false if no need to add a tag
 	function addTag(text) {
 		// Add multiple tags if the user pastes in data with SEPERATOR already in it
-		if (~text.indexOf(SEPERATOR)) text = text.split(SEPERATOR);
-		if (Array.isArray(text)) return text.forEach(addTag);
+		if (text.indexOf(SEPERATOR) >= 0) {
+			text = text.split(SEPERATOR);
+		}
+
+		if (Array.isArray(text)) {
+			return text.forEach(addTag);
+		}
 
 		let tag = text && text.trim();
 		// Ignore if text is empty
-		if (!tag) return false;
+		if (!tag) {
+			return false;
+		}
+
+		// Don't add if iti's invalid (eg, for pattern=)
+		if (!base.input.checkValidity()) {
+			base.classList.add('error')
+			setTimeout( () => base.classList.remove('error') , 100)
+			return false;
+		}
 
 		// For duplicates, briefly highlight the existing tag
 		if (!input.getAttribute('duplicates')) {
