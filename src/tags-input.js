@@ -59,7 +59,7 @@ export default function tagsInput(input) {
 			return false;
 		}
 
-		// Don't add if iti's invalid (eg, for pattern=)
+		// Don't add if it's invalid (eg, for pattern=)
 		if (!base.input.checkValidity()) {
 			base.classList.add('error')
 			setTimeout( () => base.classList.remove('error') , 100)
