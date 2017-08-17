@@ -1,0 +1,37 @@
+{
+	"env": {
+		"browser": true,
+		"commonjs": true,
+		"es6": true,
+		"node": true,
+		"mocha": true
+	},
+	"extends": "eslint:recommended",
+	"parserOptions": {
+		"ecmaVersion": 2017
+	},
+	"globals": {
+		"mixpanel": true,
+		"serverVars": true,
+		"avkind": true,
+		"kind": true,
+		"Stripe": true
+	},
+	"plugins": [
+		"must-use-await"
+	],
+	"rules": {
+		"curly": ["error", "all"],
+		"indent": [
+			"error",
+			"tab"
+		],
+		"must-use-await/must-use-await": 1, // 1 warn, 2 error
+		"linebreak-style": "off",
+		"quotes": "off",
+		"no-console": "off",
+		"semi": "off",
+		"no-unused-vars": "off",
+		"no-debugger": "off"
+	}
+}

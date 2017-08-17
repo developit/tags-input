@@ -1,6 +1,0 @@
-{
-  "modules": "umd",
-  "loose": "all",
-  "compact": true,
-  "comments": false
-}
