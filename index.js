@@ -143,8 +143,7 @@ function tagsInput(input) {
 
   input.parentNode[sib ? "insertBefore" : "appendChild"](document, sib);
 
-  input.style.cssText =
-    "position:absolute;left:0;top:-99px;width:1px;height:1px;opacity:0.01;";
+  input.style.cssText = "position:absolute;left:0;top:-99px;width:1px;height:1px;opacity:0.01;";
   input.tabIndex = -1;
 
   let inputType = input.getAttribute("type");
