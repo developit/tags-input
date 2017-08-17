@@ -1,9 +1,10 @@
 ## A fork of [tags-input](https://github.com/developit/tags-input)
 
-Slowly refactoring
+Slowly refactoring this module to add:
 
- - Plain CommonJS  / ES2017 / SASS
- - Unit tests etc
+ - Plain CommonJS  / ES2017 / SASS and eslint.
+ - Unminified variables, code run through [prettier](https://github.com/prettier/prettier-eslint-cli).
+ - Unit tests
 
 ## Usage
 
