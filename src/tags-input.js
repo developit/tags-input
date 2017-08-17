@@ -6,7 +6,8 @@ const BACKSPACE = 8,
 	DELETE = 46,
 	COMMA = 188;
 
-const SEPERATOR = ',';
+// Either of commma, space or newline, followed by 0 or more spaces.
+const SEPERATOR = /[, \n] */;
 
 const COPY_PROPS = 'placeholder pattern spellcheck autocomplete autocapitalize autofocus accessKey accept lang minLength maxLength required'.split(' ');
 
