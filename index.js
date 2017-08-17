@@ -1,4 +1,4 @@
-﻿var SEPERATOR = require("seperator");
+﻿var SEPERATOR = require("./seperator.js");
 
 const BACKSPACE = 8,
   TAB = 9,

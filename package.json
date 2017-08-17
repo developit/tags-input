@@ -1,8 +1,8 @@
 {
 	"name": "@mikemaccana/tags-input",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"main": "tags-input.js",
-	"description": "<input type=\"tags\"> like magic.",
+	"description": "Refactor of @developit's tags input.",
 	"scripts": {
 		"test": "mocha"
 	},
