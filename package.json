@@ -1,28 +1,16 @@
 {
-  "name": "tags-input",
-  "version": "2.0.0",
-  "main": "tags-input.js",
-  "description": "<input type=\"tags\"> like magic.",
-  "scripts": {
-    "build": "npm run transpile && npm run less && npm run size",
-    "transpile": "babel src --source-root src -s -d .",
-    "less": "lessc --clean-css --source-map --source-map-less-inline --autoprefix=\"last 2 versions\" src/tags-input.less tags-input.css",
-    "size": "echo \"gzip size: $(pretty-bytes $(gzip-size $npm_package_main))\"",
-    "test": "jshint src/**.js",
-    "prepublish": "npm run build",
-    "release": "npm run build && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/developit/tags-input.git"
-  },
-  "devDependencies": {
-    "babel": "^5.8.21",
-    "gzip-size": "^3.0.0",
-    "jshint": "^2.8.0",
-    "less": "^2.5.1",
-    "less-plugin-autoprefix": "^1.4.2",
-    "less-plugin-clean-css": "^1.5.1",
-    "pretty-bytes": "^2.0.1"
-  }
+	"name": "tags-input",
+	"version": "2.0.0",
+	"main": "tags-input.js",
+	"description": "<input type=\"tags\"> like magic.",
+	"scripts": {
+		"test": "mocha"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/mikemaccana/tags-input.git"
+	},
+	"devDependencies": {
+		"dedent-js": "^1.0.1"
+	}
 }
