@@ -8,9 +8,20 @@ const BACKSPACE = 8,
   DELETE = 46,
   COMMA = 188;
 
-const COPY_PROPS = "placeholder pattern spellcheck autocomplete autocapitalize autofocus accessKey accept lang minLength maxLength required".split(
-  " "
-);
+const COPY_PROPS = [
+  "placeholder",
+  "pattern",
+  "spellcheck",
+  "autocomplete",
+  "autocapitalize",
+  "autofocus",
+  "accessKey",
+  "accept",
+  "lang",
+  "minLength",
+  "maxLength",
+  "required"
+];
 
 function tagsInput(input) {
   function createElement(type, name, text, attributes) {
