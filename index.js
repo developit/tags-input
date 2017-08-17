@@ -25,16 +25,16 @@ const COPY_PROPS = [
 
 function tagsInput(input) {
   function createElement(type, name, text, attributes) {
-    let el = document.createElement(type);
-    if (name) el.className = name;
-    if (text) el.textContent = text;
+    let element = document.createElement(type);
+    if (name) element.className = name;
+    if (text) element.textContent = text;
     for (let key in attributes) {
-      el.setAttribute(`data-${key}`, attributes[key]);
+      element.setAttribute(`data-${key}`, attributes[key]);
     }
-    return el;
+    return element;
   }
 
-  function $(selector, all) {
+  function select(selector, all) {
     if (all) {
       return document.querySelectorAll(selector);
     }
@@ -42,14 +42,14 @@ function tagsInput(input) {
   }
 
   function getValue() {
-    return $(".tag", true)
+    return select(".tag", true)
       .map(tag => tag.textContent)
       .concat(document.input.value || [])
       .join(SEPERATOR);
   }
 
   function setValue(value) {
-    $(".tag", true).forEach(t => document.removeChild(t));
+    select(".tag", true).forEach(t => document.removeChild(t));
     savePartialInput(value);
   }
 
@@ -81,10 +81,10 @@ function tagsInput(input) {
 
     // For duplicates, briefly highlight the existing tag
     if (!input.getAttribute("duplicates")) {
-      let exisingTag = $(`[data-tag="${tag}"]`);
-      if (exisingTag) {
-        exisingTag.classList.add("dupe");
-        setTimeout(() => exisingTag.classList.remove("dupe"), 100);
+      let existingTag = select(`[data-tag="${tag}"]`);
+      if (existingTag) {
+        existingTag.classList.add("dupe");
+        setTimeout(() => existingTag.classList.remove("dupe"), 100);
         return false;
       }
     }
@@ -95,18 +95,18 @@ function tagsInput(input) {
     );
   }
 
-  function select(el) {
-    let sel = $(".selected");
-    if (sel) sel.classList.remove("selected");
-    if (el) el.classList.add("selected");
+  function select(element) {
+    let selectedElements = select(".selected");
+    if (selectedElements) selectedElements.classList.remove("selected");
+    if (element) element.classList.add("selected");
   }
 
   function setInputWidth() {
-    let last = $(".tag", true).pop(),
-      w = document.offsetWidth;
-    if (!w) return;
+    let last = select(".tag", true).pop(),
+      width = document.offsetWidth;
+    if (!width) return;
     document.input.style.width =
-      Math.max(w - (last ? last.offsetLeft + last.offsetWidth : 5) - 5, w / 4) +
+      Math.max(width - (last ? last.offsetLeft + last.offsetWidth : 5) - 5, width / 4) +
       "px";
   }
 
@@ -122,19 +122,19 @@ function tagsInput(input) {
     }
   }
 
-  function refocus(e) {
-    if (e.target.classList.contains("tag")) select(e.target);
-    if (e.target === document.input) return select();
+  function refocus(event) {
+    if (event.target.classList.contains("tag")) select(event.target);
+    if (event.target === document.input) return select();
     document.input.focus();
-    e.preventDefault();
+    event.preventDefault();
     return false;
   }
 
-  function caretAtStart(el) {
+  function caretAtStart(element) {
     try {
-      return el.selectionStart === 0 && el.selectionEnd === 0;
-    } catch (e) {
-      return el.value === "";
+      return element.selectionStart === 0 && element.selectionEnd === 0;
+    } catch (event) {
+      return element.value === "";
     }
   }
 
@@ -158,7 +158,7 @@ function tagsInput(input) {
       document.input[prop] = input[prop];
       try {
         delete input[prop];
-      } catch (e) {}
+      } catch (event) {}
     }
   });
   document.appendChild(document.input);
@@ -178,17 +178,17 @@ function tagsInput(input) {
     savePartialInput();
   });
 
-  document.input.addEventListener("keydown", e => {
-    let el = document.input,
-      key = e.keyCode || e.which,
-      selectedTag = $(".tag.selected"),
-      atStart = caretAtStart(el),
-      last = $(".tag", true).pop();
+  document.input.addEventListener("keydown", event => {
+    let element = document.input,
+      key = event.keyCode || event.which,
+      selectedTag = select(".tag.selected"),
+      atStart = caretAtStart(element),
+      last = select(".tag", true).pop();
 
     setInputWidth();
 
     if (key === ENTER || key === COMMA || key === TAB) {
-      if (!el.value && key !== COMMA) return;
+      if (!element.value && key !== COMMA) return;
       savePartialInput();
     } else if (key === DELETE && selectedTag) {
       if (selectedTag.nextSibling !== document.input)
@@ -224,7 +224,7 @@ function tagsInput(input) {
       return select();
     }
 
-    e.preventDefault();
+    event.preventDefault();
     return false;
   });
 

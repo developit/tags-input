@@ -21,7 +21,7 @@
 		"must-use-await"
 	],
 	"rules": {
-		"curly": "all",
+		"curly": ["error", "all"],
 		"indent": [
 			"error",
 			"tab"
