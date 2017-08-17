@@ -11,7 +11,7 @@ const SEPERATOR = /[, \n] */;
 
 const COPY_PROPS = 'placeholder pattern spellcheck autocomplete autocapitalize autofocus accessKey accept lang minLength maxLength required'.split(' ');
 
-export default function tagsInput(input) {
+function tagsInput(input) {
 	function createElement(type, name, text, attributes) {
 		let el = document.createElement(type);
 		if (name) el.className = name;
@@ -243,3 +243,5 @@ export default function tagsInput(input) {
 
 // make life easier:
 tagsInput.enhance = tagsInput.tagsInput = tagsInput;
+
+module.exports = tagsInput;
