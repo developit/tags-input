@@ -8,9 +8,7 @@
   "description": "<input type=\"tags\"> like magic.",
   "main": "tags-input.js,tags-input.css",
   "moduleType": [
-    "amd",
-    "node",
-    "globals"
+    "node"
   ],
   "keywords": [
     "tags",
