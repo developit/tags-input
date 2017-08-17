@@ -23,18 +23,21 @@ function tagsInput(input) {
 	}
 
 	function $(selector, all) {
-		return all===true ? Array.prototype.slice.call(base.querySelectorAll(selector)) : base.querySelector(selector);
+		if ( all ) {
+			return document.querySelectorAll(selector)
+		}
+		return document.querySelector(selector);
 	}
 
 	function getValue() {
 		return $('.tag', true)
 			.map( tag => tag.textContent )
-			.concat(base.input.value || [])
+			.concat(document.input.value || [])
 			.join(SEPERATOR);
 	}
 
 	function setValue(value) {
-		$('.tag', true).forEach( t => base.removeChild(t) );
+		$('.tag', true).forEach( t => document.removeChild(t) );
 		savePartialInput(value);
 	}
 
@@ -60,7 +63,7 @@ function tagsInput(input) {
 		}
 
 		// Don't add if it's invalid (eg, for pattern=)
-		if ( ! base.input.checkValidity() ) {
+		if ( ! document.input.checkValidity() ) {
 			return false;
 		}
 
@@ -74,9 +77,9 @@ function tagsInput(input) {
 			}
 		}
 
-		base.insertBefore(
+		document.insertBefore(
 			createElement('span', 'tag', tag, { tag }),
-			base.input
+			document.input
 		);
 	}
 
@@ -88,9 +91,9 @@ function tagsInput(input) {
 
 	function setInputWidth() {
 		let last = $('.tag',true).pop(),
-			w = base.offsetWidth;
+			w = document.offsetWidth;
 		if (!w) return;
-		base.input.style.width = Math.max(
+		document.input.style.width = Math.max(
 			w - (last ? (last.offsetLeft+last.offsetWidth) : 5) - 5,
 			w/4
 		) + 'px';
@@ -98,11 +101,11 @@ function tagsInput(input) {
 
 	function savePartialInput(value) {
 		if (typeof value!=='string' && !Array.isArray(value)) {
-			// If the base input does not contain a value, default to the original element passed
-			value = base.input.value;
+			// If the document input does not contain a value, default to the original element passed
+			value = document.input.value;
 		}
 		if (addTag(value)!==false) {
-			base.input.value = '';
+			document.input.value = '';
 			save();
 			setInputWidth();
 		}
@@ -110,8 +113,8 @@ function tagsInput(input) {
 
 	function refocus(e) {
 		if (e.target.classList.contains('tag')) select(e.target);
-		if (e.target===base.input) return select();
-		base.input.focus();
+		if (e.target===document.input) return select();
+		document.input.focus();
 		e.preventDefault();
 		return false;
 	}
@@ -126,10 +129,10 @@ function tagsInput(input) {
 	}
 
 
-	let base = createElement('div', 'tags-input'),
+	let document = createElement('div', 'tags-input'),
 		sib = input.nextSibling;
 
-	input.parentNode[sib?'insertBefore':'appendChild'](base, sib);
+	input.parentNode[sib?'insertBefore':'appendChild'](document, sib);
 
 	input.style.cssText = 'position:absolute;left:0;top:-99px;width:1px;height:1px;opacity:0.01;';
 	input.tabIndex = -1;
@@ -138,33 +141,33 @@ function tagsInput(input) {
 	if (!inputType || inputType === 'tags') {
 		inputType = 'text';
 	}
-	base.input = createElement('input');
-	base.input.setAttribute('type', inputType);
+	document.input = createElement('input');
+	document.input.setAttribute('type', inputType);
 	COPY_PROPS.forEach( prop => {
-		if (input[prop]!==base.input[prop]) {
-			base.input[prop] = input[prop];
+		if (input[prop]!==document.input[prop]) {
+			document.input[prop] = input[prop];
 			try { delete input[prop]; }catch(e){}
 		}
 	});
-	base.appendChild(base.input);
+	document.appendChild(document.input);
 
 	input.addEventListener('focus', () => {
-		base.input.focus();
+		document.input.focus();
 	});
 
-	base.input.addEventListener('focus', () => {
-		base.classList.add('focus');
+	document.input.addEventListener('focus', () => {
+		document.classList.add('focus');
 		select();
 	});
 
-	base.input.addEventListener('blur', () => {
-		base.classList.remove('focus');
+	document.input.addEventListener('blur', () => {
+		document.classList.remove('focus');
 		select();
 		savePartialInput();
 	});
 
-	base.input.addEventListener('keydown', e => {
-		let el = base.input,
+	document.input.addEventListener('keydown', e => {
+		let el = document.input,
 			key = e.keyCode || e.which,
 			selectedTag = $('.tag.selected'),
 			atStart = caretAtStart(el),
@@ -177,15 +180,15 @@ function tagsInput(input) {
 			savePartialInput();
 		}
 		else if (key===DELETE && selectedTag) {
-			if (selectedTag.nextSibling!==base.input) select(selectedTag.nextSibling);
-			base.removeChild(selectedTag);
+			if (selectedTag.nextSibling!==document.input) select(selectedTag.nextSibling);
+			document.removeChild(selectedTag);
 			setInputWidth();
 			save();
 		}
 		else if (key===BACKSPACE) {
 			if (selectedTag) {
 				select(selectedTag.previousSibling);
-				base.removeChild(selectedTag);
+				document.removeChild(selectedTag);
 				setInputWidth();
 				save();
 			}
@@ -223,19 +226,19 @@ function tagsInput(input) {
 
 	// Proxy "input" (live change) events , update the first tag live as the user types
 	// This means that users who only want one thing don't have to enter commas
-	base.input.addEventListener('input', () => {
+	document.input.addEventListener('input', () => {
 		input.value = getValue();
 		input.dispatchEvent(new Event('input'));
 	});
 
 	// One tick after pasting, parse pasted text as CSV:
-	base.input.addEventListener('paste', () => setTimeout(savePartialInput, 0));
+	document.input.addEventListener('paste', () => setTimeout(savePartialInput, 0));
 
-	base.addEventListener('mousedown', refocus);
-	base.addEventListener('touchstart', refocus);
+	document.addEventListener('mousedown', refocus);
+	document.addEventListener('touchstart', refocus);
 
-	base.setValue = setValue;
-	base.getValue = getValue;
+	document.setValue = setValue;
+	document.getValue = getValue;
 
 	// Add tags for existing values
 	savePartialInput(input.value);
