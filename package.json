@@ -1,5 +1,5 @@
 {
-	"name": "tags-input",
+	"name": "@mikemaccana/tags-input",
 	"version": "2.0.0",
 	"main": "tags-input.js",
 	"description": "<input type=\"tags\"> like magic.",
