@@ -140,6 +140,14 @@ export default function tagsInput(input) {
 		base.input.focus();
 	});
 
+	input.addEventListener('change', () => {
+		let currentValue = getValue();
+		if(currentValue !== input.value) {
+			setValue(input.value);
+			base.input.focus();
+		}
+	});
+
 	base.input.addEventListener('focus', () => {
 		base.classList.add('focus');
 		select();
