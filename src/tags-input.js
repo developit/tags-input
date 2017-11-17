@@ -54,7 +54,8 @@ export default function tagsInput(input) {
 
 		// For duplicates, briefly highlight the existing tag
 		if (!input.getAttribute('duplicates')) {
-			let exisingTag = $(`[data-tag="${tag}"]`);
+			let escaped = tag.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/])/g,'\\$1')
+			let exisingTag = $(`[data-tag="${escaped}"]`);
 			if (exisingTag) {
 				exisingTag.classList.add('dupe');
 				setTimeout( () => exisingTag.classList.remove('dupe') , 100);
