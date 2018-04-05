@@ -11,6 +11,10 @@ const SEPERATOR = ',';
 const COPY_PROPS = 'placeholder pattern spellcheck autocomplete autocapitalize autofocus accessKey accept lang minLength maxLength required'.split(' ');
 
 export default function tagsInput(input) {
+	var public_api = {
+		"tags" : getTags
+	};
+
 	function createElement(type, name, text, attributes) {
 		let el = document.createElement(type);
 		if (name) el.className = name;
@@ -25,9 +29,13 @@ export default function tagsInput(input) {
 		return all===true ? Array.prototype.slice.call(base.querySelectorAll(selector)) : base.querySelector(selector);
 	}
 
-	function getValue() {
+	function getTags() {
 		return $('.tag', true)
 			.map( tag => tag.textContent )
+	}
+
+	function getValue() {
+			getTags()
 			.concat(base.input.value || [])
 			.join(SEPERATOR);
 	}
@@ -39,7 +47,7 @@ export default function tagsInput(input) {
 
 	function save() {
 		input.value = getValue();
-		input.dispatchEvent(new Event('change'));
+		input.dispatchEvent(new CustomEvent('change', {detail: callbacks}));
 	}
 
 	// Return false if no need to add a tag
@@ -213,7 +221,7 @@ export default function tagsInput(input) {
 	// This means that users who only want one thing don't have to enter commas
 	base.input.addEventListener('input', () => {
 		input.value = getValue();
-		input.dispatchEvent(new Event('input'));
+		input.dispatchEvent(new CustomEvent('input', {detail: callbacks}));
 	});
 
 	// One tick after pasting, parse pasted text as CSV:
@@ -227,6 +235,7 @@ export default function tagsInput(input) {
 
 	// Add tags for existing values
 	savePartialInput(input.value);
+	return public_api;
 }
 
 // make life easier:
