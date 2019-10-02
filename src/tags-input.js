@@ -224,9 +224,12 @@ export default function tagsInput(input) {
 
 	base.setValue = setValue;
 	base.getValue = getValue;
+	base.addTag = addTag;
 
 	// Add tags for existing values
 	savePartialInput(input.value);
+
+	return base;
 }
 
 // make life easier:
